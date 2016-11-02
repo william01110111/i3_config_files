@@ -1,0 +1,51 @@
+general {
+  output_format = "i3bar"
+  colors = true
+	colors = true  
+    color_good =     '#88b090'  
+    color_degraded = '#ccdc90'  
+    color_bad =      '#e89393'
+  interval = 1
+}
+ 
+order += "battery 0"
+order += "cpu_usage"
+order += "tztime date0"
+order += "tztime time0"
+ 
+volume master {
+ format = " Vol: %volume "
+ format_muted = "muted"
+ device = "default"
+ mixer = "Master"
+ mixer_idx = 0
+}
+
+battery 0 {
+	#normal
+        format = " %status: %percentage "
+
+	#no battery
+	format_down = " "
+        
+	path = "/sys/class/power_supply/BAT%d/uevent"
+        low_threshold = 15
+}
+
+cpu_usage {
+  format = " CPU: %usage "
+}
+
+tztime local0 {
+  format = " %Y-%m-%d %a %H:%M:%S %Z"
+}
+
+tztime date0
+{
+	format = " %a, %b %d "
+}
+
+tztime time0
+{
+	  format = " %H%M:%S "
+}
