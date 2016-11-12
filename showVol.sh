@@ -1,8 +1,8 @@
 
-var=$(amixer)
+#var=$(amixer)
 
 #echo $var
 
-sed
+#sed
 
 
