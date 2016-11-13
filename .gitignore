@@ -1,0 +1,14 @@
+# c++
+
+*.o
+
+
+#codeblocks
+
+*.layout
+*.depend
+
+#my naming convention for executables
+
+*Run
+
