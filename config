@@ -271,8 +271,8 @@
 	#bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%; exec --no-startup-id notify-send "Volume Up" --icon=multimedia-volume-control
 	#bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle; exec --no-startup-id notify-send "Mute Toggle" --icon=multimedia-volume-control
 	bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 6%-; exec --no-startup-id $scriptDir/WidapPopup/WidapPopupRun volume auto
-	bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 6%+; exec --no-startup-id $scriptDir/WidapPopup/WidapPopupRun volume 0.8
-	bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle; exec --no-startup-id $scriptDir/WidapPopup/WidapPopupRun volume -0.5
+	bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 6%+; exec --no-startup-id $scriptDir/WidapPopup/WidapPopupRun volume auto
+	bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle; exec --no-startup-id $scriptDir/WidapPopup/WidapPopupRun volume auto
 	
 	#Brightness
 	

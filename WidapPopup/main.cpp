@@ -33,20 +33,19 @@ using std::endl;
 
 sf::RenderWindow window;
 
-enum Mode
-{
-	NO_MODE=0,
-	VOL,
-}
-mode=NO_MODE;
-
 string windowName="WidapPopupWindow";
 
 void createWindow();
 
 void showVolLevel(double level);
+void showError();
 
 double getCurrentVolLevel();
+
+string getOutputFromCmd(string cmd);
+
+bool substringMatches(const string& in, int pos, const string& subStr);
+int searchInString(const string& in, int startPos, const string& pattern);
 
 void sleepFor(double time);
 
@@ -112,12 +111,22 @@ void createWindow()
 	window.setActive(false);
 }
 
+void showError()
+{
+	if (!window.isOpen())
+	{
+		createWindow();
+	}
+	
+	window.clear(sf::Color(255, 0, 0, 255));
+}
+
 void showVolLevel(double level)
 {
 	bool muted=(level<=0);
 	level=fabs(level);
 	
-	if (mode!=VOL)
+	if (!window.isOpen())
 	{
 		createWindow();
 	}
@@ -157,7 +166,71 @@ void showVolLevel(double level)
 
 double getCurrentVolLevel()
 {
-	return 0.5;
+	string amixerOut=getOutputFromCmd("amixer sget Master");
+	
+	int end=searchInString(amixerOut, 0, "%]");
+	
+	if (end<0)
+		return 0;
+	
+	int start=end-1;
+	
+	while (start>=0 && amixerOut[start]!='[')
+	{
+		start--;
+	}
+	
+	start++;
+	
+	int percent=stoi(amixerOut.substr(start, end));
+	
+	return percent/100.0;
+}
+
+string getOutputFromCmd(string cmd)
+{
+	const int bufferSize=4096;
+    char buffer[bufferSize];
+    std::string result = "";
+    FILE* pipe = popen(cmd.c_str(), "r");
+    if (!pipe) throw std::runtime_error("popen() failed in getOutputFromCmd");
+    try {
+        while (!feof(pipe)) {
+            if (fgets(buffer, bufferSize, pipe) != NULL)
+                result += buffer;
+        }
+    } catch (...) {
+        pclose(pipe);
+        throw;
+    }
+    pclose(pipe);
+    return result;
+}
+
+bool substringMatches(const string& in, int pos, const string& subStr)
+{
+	//check if the substring extends past the string size
+	if (in.size()<pos+subStr.size())
+		return false;
+	
+	for (unsigned i=0; i<subStr.size(); ++i)
+	{
+		if (in[i+pos]!=subStr[i])
+			return false;
+	}
+	
+	return true;
+}
+
+int searchInString(const string& in, int startPos, const string& pattern)
+{
+	for (unsigned i=startPos; i<in.size(); i++)
+	{
+		if (substringMatches(in, i, pattern))
+			return i;
+	}
+	
+	return -1;
 }
 
 void sleepFor(double time)
