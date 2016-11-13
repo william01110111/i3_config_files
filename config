@@ -276,8 +276,8 @@
 	
 	#Brightness
 	
-	bindsym XF86MonBrightnessUp exec --no-startup-id $scriptDir/brightnessControl.sh 8
-	bindsym XF86MonBrightnessDown exec --no-startup-id $scriptDir/brightnessControl.sh -8
+	bindsym XF86MonBrightnessUp exec --no-startup-id $scriptDir/brightnessControl.sh 4
+	bindsym XF86MonBrightnessDown exec --no-startup-id $scriptDir/brightnessControl.sh -4
 	
 
 #____/ Font \____
@@ -341,6 +341,7 @@
 	for_window [title="Firefox Preferences"] floating enable
 	for_window [title="Calculator"] floating enable
 	for_window [title="Widap Launcher"] floating enable
+	for_window [title="WidapPopupWindow"] floating enable
 
 	#calender popup
 	for_window [title="wrapper-1.0"] floating enable
