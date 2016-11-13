@@ -33,6 +33,8 @@ using std::endl;
 
 sf::RenderWindow window;
 
+const double PI=3.14159265358979323846;
+
 string windowName="WidapPopupWindow";
 
 void createWindow();
@@ -82,7 +84,7 @@ int main(int argc, char** argv)
 				}
 				
 				showVolLevel(level);
-				sleepFor(1.2);
+				sleepFor(0.8);
 			}
 
 		}
@@ -99,16 +101,18 @@ void createWindow()
 		window.close();
 	
 	int screenX=sf::VideoMode::getDesktopMode().width;
-	int screenY=sf::VideoMode::getDesktopMode().height;
+	//int screenY=sf::VideoMode::getDesktopMode().height;
 	
-	int dimX=screenX*0.15;
+	int dimX=screenX*0.14;
 	int dimY=dimX;
 	
 	window.create(sf::VideoMode(dimX, dimY), windowName, sf::Style::None);
 	
-	window.setPosition(sf::Vector2i((screenX-dimX)/2, screenY-dimY*1.3));
+	//window.setPosition(sf::Vector2i((screenX-dimX)/2, screenY-dimY*1.3));
 	
-	window.setActive(false);
+	//window.setSize(sf::Vector2u(dimX, dimY));
+	
+	//window.setView(sf::View(sf::FloatRect(0, 0, dimX, dimY)));
 }
 
 void showError()
@@ -131,35 +135,85 @@ void showVolLevel(double level)
 		createWindow();
 	}
 	
-	const sf::Color backgroundC(16, 16, 16, 255);
-	const sf::Color speakerC(136, 136, 136, 255);
-	const sf::Color sliderBkndC(speakerC);
-	const sf::Color sliderC=(muted?sliderBkndC:sf::Color(37, 141, 249, 255));
+	const sf::Color backgroundC(16, 16, 16);
+	const sf::Color speakerC(136, 136, 136);
+	const sf::Color sliderBkndC(38, 38, 38);
+	const sf::Color sliderC=(muted?speakerC:sf::Color(37, 141, 249));
+	const sf::Color muteXC(237, 60, 42);
+	const sf::Color soundWaveC=sliderC;
 	
 	double w=window.getSize().x;
 	double h=window.getSize().y;
 	
+	window.clear(backgroundC);
+	
 	sf::RectangleShape speakerS1;
 	speakerS1.setPosition(sf::Vector2f(0.2*w, 0.3*h));
-	speakerS1.setSize(sf::Vector2f(0.2*w, 0.2*h));
+	speakerS1.setSize(sf::Vector2f(0.1*w, 0.2*h));
 	speakerS1.setFillColor(speakerC);
+	window.draw(speakerS1);
 	
 	sf::ConvexShape speakerS2(4);
-	speakerS2.setPoint(0, sf::Vector2f(0.4*w, 0.3*h));
-	speakerS2.setPoint(1, sf::Vector2f(0.6*w, 0.1*h));
-	speakerS2.setPoint(2, sf::Vector2f(0.6*w, 0.7*h));
-	speakerS2.setPoint(3, sf::Vector2f(0.4*w, 0.5*h));
+	speakerS2.setPoint(0, sf::Vector2f(0.3*w, 0.3*h));
+	speakerS2.setPoint(1, sf::Vector2f(0.5*w, 0.1*h));
+	speakerS2.setPoint(2, sf::Vector2f(0.5*w, 0.7*h));
+	speakerS2.setPoint(3, sf::Vector2f(0.3*w, 0.5*h));
 	speakerS2.setFillColor(speakerC);
+	window.draw(speakerS2);
+	
+	sf::RectangleShape sliderBkndS1;
+	sliderBkndS1.setPosition(sf::Vector2f(0.1*w, 0.85*h));
+	sliderBkndS1.setSize(sf::Vector2f(0.8*w, 0.05*h));
+	sliderBkndS1.setFillColor(sliderBkndC);
+	window.draw(sliderBkndS1);
 	
 	sf::RectangleShape sliderS1;
 	sliderS1.setPosition(sf::Vector2f(0.1*w, 0.85*h));
-	sliderS1.setSize(sf::Vector2f(0.8*w*level, 0.1*h));
+	sliderS1.setSize(sf::Vector2f(0.8*w*level, 0.05*h));
 	sliderS1.setFillColor(sliderC);
-	
-	window.clear(backgroundC);
-	window.draw(speakerS1);
-	window.draw(speakerS2);
 	window.draw(sliderS1);
+	
+	if (muted)
+	{
+		sf::CircleShape muteXS2;
+		muteXS2.setRadius(0.15*h);
+		muteXS2.setOrigin(sf::Vector2f(muteXS2.getRadius(), muteXS2.getRadius()));
+		muteXS2.setPosition(sf::Vector2f(0.55*w, 0.4*h));
+		muteXS2.setFillColor(sf::Color(0, 0, 0, 0));
+		muteXS2.setOutlineThickness(12);
+		muteXS2.setOutlineColor(muteXC);
+		window.draw(muteXS2);
+		
+		sf::RectangleShape muteXS1;
+		muteXS1.setSize(sf::Vector2f(0.3*w, 0.05*h));
+		muteXS1.setOrigin(sf::Vector2f(muteXS1.getSize().x/2.0, muteXS1.getSize().y/2.0));
+		muteXS1.setRotation(45);
+		muteXS1.setPosition(sf::Vector2f(0.55*w, 0.4*h));
+		muteXS1.setFillColor(muteXC);
+		window.draw(muteXS1);
+	}
+	else
+	{
+		const int res=16;
+		const double rad=0.1*w;
+		const double ang=100;
+		
+		for (int i=0; i<res; i++)
+		{
+			for (int j=1; j<level*3.5+0.5; j++)
+			{
+				sf::RectangleShape soundWaveS;
+				const int dir=(i+0.5)*ang/res+360-ang/2;
+				const int dst=rad*j;
+				soundWaveS.setSize(sf::Vector2f((PI*j*rad*2*ang/360)/res+0.01*h, 0.02*h));
+				soundWaveS.setOrigin(sf::Vector2f(soundWaveS.getSize().x/2.0, soundWaveS.getSize().y/2.0));
+				soundWaveS.setRotation(dir+90);
+				soundWaveS.setPosition(sf::Vector2f(cos(dir*PI/180)*dst+w*0.5, sin(dir*PI/180)*dst+h*0.4));
+				soundWaveS.setFillColor(soundWaveC);
+				window.draw(soundWaveS);
+			}
+		}
+	}
 	
 	window.display();
 }
@@ -168,23 +222,45 @@ double getCurrentVolLevel()
 {
 	string amixerOut=getOutputFromCmd("amixer sget Master");
 	
-	int end=searchInString(amixerOut, 0, "%]");
+	int end1=searchInString(amixerOut, 0, "%]");
 	
-	if (end<0)
+	if (end1<0)
 		return 0;
 	
-	int start=end-1;
+	int start1=end1-1;
 	
-	while (start>=0 && amixerOut[start]!='[')
+	while (start1>=0 && amixerOut[start1]!='[')
 	{
-		start--;
+		start1--;
 	}
 	
-	start++;
+	start1++;
 	
-	int percent=stoi(amixerOut.substr(start, end));
+	int percent=stoi(amixerOut.substr(start1, end1-start1));
 	
-	return percent/100.0;
+	int start2=end1;
+	
+	while (start2<int(amixerOut.size()) && amixerOut[start2]!='[')
+	{
+		start2++;
+	}
+	
+	start2++;
+	
+	int end2=start2;
+	
+	while (end2<int(amixerOut.size()) && amixerOut[end2]!=']')
+	{
+		end2++;
+	}
+	
+	cout << endl << start2 << ", " << end2 << endl;
+	
+	string onOff=amixerOut.substr(start2, end2-start2);
+	
+	bool muted=(onOff=="off");
+	
+	return (muted?-1:1)*percent/100.0;
 }
 
 string getOutputFromCmd(string cmd)
