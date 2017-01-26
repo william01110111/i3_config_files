@@ -68,6 +68,10 @@
 
 	#set $mod to the key Mod4, which is the super key
 	set $mod Mod4
+	
+	#swap caps lock and escape
+	exec --no-startup-id xmodmap -e "keycode 66 = Escape NoSymbol Escape" # do the swap
+	exec --no-startup-id xmodmap -e "clear Lock" # stop the light from toggeling
 
 
 #__________________________________/ Init \__________________________________
@@ -99,19 +103,20 @@
 #____/ Panels and applets \____
 
 	#start wifi manager
-	exec --no-startup-id nm-applet
+	# exec --no-startup-id nm-applet
 
 	#start power manager
-#	exec --no-startup-id xfce4-power-manager
+	# exec --no-startup-id xfce4-power-manager
 
 	#start volume manager
-	exec --no-startup-id gnome-sound-applet
+	# exec --no-startup-id gnome-sound-applet
 
 	#xfce panel
-	# exec --no-startup-id xfce4-panel --disable-wm-check
+	#exec --no-startup-id GTK_THEME=Adwaita:dark xfce4-panel --disable-wm-check
+	exec --no-startup-id xfce4-panel --disable-wm-check
 
 	#LXPanel
-	exec --no-startup-id lxpanel
+	# exec --no-startup-id lxpanel
 
 
 #__________________________________/ Set Launch Bindings \__________________________________
@@ -138,8 +143,15 @@
 	bindsym $mod+c exec gedit ~/.config/i3/config
 
 	# type tilde
-	# bindsym Control+less exec --no-startup-id xdotool key asciitilde
-
+	bindsym Control+less exec "sleep 0.2; xdotool key --clearmodifiers asciitilde"
+	
+#____/ custom scripts \____
+	bindsym $mod+1 exec $scriptDir/temp_scripts/1.sh
+	bindsym $mod+2 exec $scriptDir/temp_scripts/2.sh
+	bindsym $mod+3 exec $scriptDir/temp_scripts/3.sh
+	bindsym $mod+4 exec $scriptDir/temp_scripts/4.sh
+		
+	
 #____/ Run Common Programs \____
 
 #	bindsym $mod+Control+n exec nautilus --no-desktop
@@ -270,15 +282,19 @@
 	#bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
 	#bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%; exec --no-startup-id notify-send "Volume Up" --icon=multimedia-volume-control
 	#bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle; exec --no-startup-id notify-send "Mute Toggle" --icon=multimedia-volume-control
-	bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 5%-; exec --no-startup-id $scriptDir/WidapPopup/WidapPopupRun volume auto
-	bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 5%+; exec --no-startup-id $scriptDir/WidapPopup/WidapPopupRun volume auto
-	bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle; exec --no-startup-id $scriptDir/WidapPopup/WidapPopupRun volume auto
+	bindsym XF86AudioLowerVolume exec --no-startup-id amixer set Master 5%-; exec --no-startup-id $scriptDir/WidapPopup/WidapPopupRun volume
+	bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 5%+; exec --no-startup-id $scriptDir/WidapPopup/WidapPopupRun volume
+	bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle; exec --no-startup-id $scriptDir/WidapPopup/WidapPopupRun volume
 	
 	#Brightness
 	
 	bindsym XF86MonBrightnessUp exec --no-startup-id $scriptDir/brightnessControl.sh 4
 	bindsym XF86MonBrightnessDown exec --no-startup-id $scriptDir/brightnessControl.sh -4
 	
+	#Keyboard brightness
+	
+	bindsym XF86KbdBrightnessUp exec --no-startup-id $scriptDir/kbBrightnessControl.sh 8
+	bindsym XF86KbdBrightnessDown exec --no-startup-id $scriptDir/kbBrightnessControl.sh -8
 
 #____/ Font \____
 
@@ -322,7 +338,10 @@
 
 	# gaps
 	gaps outer 0
-	gaps inner 24
+	gaps inner 0
+	
+	# leave fullscreen on popup
+	popup_during_fullscreen ignore
 
 	#multi monitor stuff (shouldn't affect you unless you use multiple monitors)
 	workspace 1 output LVDS1

@@ -16,4 +16,5 @@ if (( $new < $min )); then
 fi
 
 sudo tee /sys/class/backlight/intel_backlight/brightness <<< $new
+/home/william/.config/i3/WidapPopup/WidapPopupRun brightness $(($new*100/$max))
 

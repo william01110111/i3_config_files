@@ -1,8 +1,9 @@
 
-///vslid commands to this program
-//WidapPopupRun volume 0.3
-//WidapPopupRun volume -0.3 #for muted
-//WidapPopupRun volume auto
+///valid commands to this program
+
+//WidapPopupRun volume
+//WidapPopupRun brightness [0-100]
+//WidapPopupRun kb-brightness [0-100]
 
 ///you must put the following lines into linker options to use sfml window
 /*
@@ -40,6 +41,8 @@ string windowName="WidapPopupWindow";
 void createWindow();
 
 void showVolLevel(double level);
+void showBrightLevel(double level);
+void showKbBrightLevel(double level);
 void showError();
 
 double getCurrentVolLevel();
@@ -53,45 +56,53 @@ void sleepFor(double time);
 
 int main(int argc, char** argv)
 {
-	if (argc<2)
+	string command;
+	if (argc>=2)
 	{
-		cout << "no command" << endl;
-		return 1;
+		command=argv[1];
 	}
-	else
+	
+	if (command=="volume")
 	{
-		string command=argv[1];
+		double level;
 		
-		if (command=="volume")
+		level=getCurrentVolLevel();
+		
+		showVolLevel(level);
+		sleepFor(0.8);
+	}
+	else if (command=="brightness")
+	{
+		if (argc>=3)
 		{
-			if (argc<3)
-			{
-				cout << "no level" << endl;
-				return 1;
-			}
-			else
-			{
-				string levelStr=argv[2];
-				double level=0;
-				
-				if (levelStr=="auto")
-				{
-					level=getCurrentVolLevel();
-				}
-				else
-				{
-					level=stod(levelStr);
-				}
-				
-				showVolLevel(level);
-				sleepFor(0.8);
-			}
-
+			showBrightLevel(stoi(argv[2])/100.0);
+			sleepFor(0.8);
 		}
 		else
 		{
-			cout << "invalid command" << endl;
+			cout << "no brightness level given" << endl;
 		}
+	}
+	else if (command=="kb-brightness")
+	{
+		if (argc>=3)
+		{
+			showKbBrightLevel(stoi(argv[2])/100.0);
+			sleepFor(0.8);
+		}
+		else
+		{
+			cout << "no brightness level given" << endl;
+		}
+	}
+	else
+	{
+		cout << "invalid command" << endl;
+		cout << "\tWidapPopupRun volume" << endl;
+		cout << "\tWidapPopupRun brightness [0-100]" << endl;
+		cout << "\tWidapPopupRun kb-brightness [0-100]" << endl;
+		showError();
+		sleepFor(0.8);
 	}
 }
 
@@ -122,7 +133,9 @@ void showError()
 		createWindow();
 	}
 	
-	window.clear(sf::Color(255, 0, 0, 255));
+	window.clear(sf::Color(255, 0, 0));
+	
+	window.display();
 }
 
 void showVolLevel(double level)
@@ -214,6 +227,151 @@ void showVolLevel(double level)
 			}
 		}
 	}
+	
+	window.display();
+}
+
+void showBrightLevel(double level)
+{
+	level=fabs(level);
+	
+	if (!window.isOpen())
+	{
+		createWindow();
+	}
+	
+	const sf::Color backgroundC(16, 16, 16);
+	//const sf::Color sunRayC(255*(0.5+level*0.5), 255*(0.5+level*0.5), 255*(0.5+level*0.5));
+	const sf::Color sunRayC(221, 221, 221);
+	const sf::Color sliderBkndC(38, 38, 38);
+	const sf::Color sliderC=(sf::Color(37, 141, 249));
+	const sf::Color muteXC(237, 60, 42);
+	const sf::Color sunBodyC=sunRayC;
+	
+	double w=window.getSize().x;
+	double h=window.getSize().y;
+	
+	window.clear(backgroundC);
+	
+	sf::CircleShape sunBodyS;
+	sunBodyS.setRadius(0.15*h);
+	sunBodyS.setOrigin(sf::Vector2f(sunBodyS.getRadius(), sunBodyS.getRadius()));
+	sunBodyS.setPosition(sf::Vector2f(0.5*w, 0.45*h));
+	sunBodyS.setFillColor(sunBodyC);
+	window.draw(sunBodyS);
+	
+	for (int i=0; i<6; i++)
+	{
+		sf::RectangleShape rayS;
+		const int dir=i/6.0*360;
+		const int dst=level*w*0.2+w*0.01;
+		rayS.setSize(sf::Vector2f(dst, 0.04*h));
+		rayS.setOrigin(sf::Vector2f(0, rayS.getSize().y/2.0));
+		rayS.setRotation(dir);
+		rayS.setPosition(sf::Vector2f(cos(dir*PI/180)*w*0.2+w*0.5, sin(dir*PI/180)*h*0.2+h*0.45));
+		rayS.setFillColor(sunRayC);
+		window.draw(rayS);
+	}
+	
+	sf::RectangleShape sliderBkndS1;
+	sliderBkndS1.setPosition(sf::Vector2f(0.1*w, 0.85*h));
+	sliderBkndS1.setSize(sf::Vector2f(0.8*w, 0.05*h));
+	sliderBkndS1.setFillColor(sliderBkndC);
+	window.draw(sliderBkndS1);
+	
+	sf::RectangleShape sliderS1;
+	sliderS1.setPosition(sf::Vector2f(0.1*w, 0.85*h));
+	sliderS1.setSize(sf::Vector2f(0.8*w*level, 0.05*h));
+	sliderS1.setFillColor(sliderC);
+	window.draw(sliderS1);
+	
+	window.display();
+}
+
+void showKbBrightLevel(double level)
+{
+	level=fabs(level);
+	
+	if (!window.isOpen())
+	{
+		createWindow();
+	}
+	
+	const sf::Color backgroundC(16, 16, 16);
+	//const sf::Color sunRayC(255*(0.5+level*0.5), 255*(0.5+level*0.5), 255*(0.5+level*0.5));
+	const sf::Color sunRayC(level*128+127, level*128+127, level*128+127);
+	const sf::Color sliderBkndC(38, 38, 38);
+	const sf::Color sliderC=(sf::Color(37, 141, 249));
+	//const sf::Color muteXC(237, 60, 42);
+	const sf::Color keyC=sunRayC;
+	
+	double w=window.getSize().x;
+	double h=window.getSize().y;
+	
+	window.clear(backgroundC);
+	
+	/*
+	sf::CircleShape sunBodyS;
+	sunBodyS.setRadius(0.15*h);
+	sunBodyS.setOrigin(sf::Vector2f(sunBodyS.getRadius(), sunBodyS.getRadius()));
+	sunBodyS.setPosition(sf::Vector2f(0.5*w, 0.45*h));
+	sunBodyS.setFillColor(sunBodyC);
+	window.draw(sunBodyS);
+	*/
+	
+	sf::ConvexShape keyS(4);
+	keyS.setPoint(0, sf::Vector2f(0.15*w, 0.7*h));
+	keyS.setPoint(1, sf::Vector2f(0.85*w, 0.7*h));
+	keyS.setPoint(2, sf::Vector2f(0.7*w, 0.5*h));
+	keyS.setPoint(3, sf::Vector2f(0.3*w, 0.5*h));
+	keyS.setFillColor(sliderBkndC);
+	keyS.setOutlineColor(keyC);
+	keyS.setOutlineThickness(h*0.02);
+	window.draw(keyS);
+	
+	/*
+	sf::RectangleShape blockerS;
+	blockerS.setPosition(sf::Vector2f(0.2*w, 0.455*h));
+	blockerS.setSize(sf::Vector2f(0.6*w, 0.04*h));
+	blockerS.setFillColor(backgroundC);
+	window.draw(blockerS);
+	*/
+	
+	sf::ConvexShape GlyphS(5);
+	GlyphS.setPoint(0, sf::Vector2f(0.4*w, 0.67*h));
+	GlyphS.setPoint(1, sf::Vector2f(0.5*w, 0.55*h));
+	GlyphS.setPoint(2, sf::Vector2f(0.6*w, 0.67*h));
+	GlyphS.setPoint(3, sf::Vector2f(0.55*w, 0.61*h));
+	GlyphS.setPoint(4, sf::Vector2f(0.45*w, 0.61*h));
+	GlyphS.setFillColor(sf::Color::Transparent);
+	GlyphS.setOutlineColor(keyC);
+	GlyphS.setOutlineThickness(h*0.02);
+	window.draw(GlyphS);
+	
+	for (int i=0; i<4; i++)
+	{
+		sf::RectangleShape rayS;
+		const int dir=i/12.0*360-90-45;
+		const int dst=level*w*0.2;
+		rayS.setSize(sf::Vector2f(dst, 0.04*h));
+		rayS.setOrigin(sf::Vector2f(0, rayS.getSize().y/2.0));
+		rayS.setRotation(dir);
+		rayS.setPosition(sf::Vector2f(cos(dir*PI/180)*w*0.4+w*0.5, sin(dir*PI/180)*h*0.4+h*0.7));
+		rayS.setFillColor(sunRayC);
+		window.draw(rayS);
+	}
+	
+	sf::RectangleShape sliderBkndS1;
+	sliderBkndS1.setPosition(sf::Vector2f(0.1*w, 0.85*h));
+	sliderBkndS1.setSize(sf::Vector2f(0.8*w, 0.05*h));
+	sliderBkndS1.setFillColor(sliderBkndC);
+	window.draw(sliderBkndS1);
+	
+	sf::RectangleShape sliderS1;
+	sliderS1.setPosition(sf::Vector2f(0.1*w, 0.85*h));
+	sliderS1.setSize(sf::Vector2f(0.8*w*level, 0.05*h));
+	sliderS1.setFillColor(sliderC);
+	window.draw(sliderS1);
 	
 	window.display();
 }
