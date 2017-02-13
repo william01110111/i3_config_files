@@ -1,40 +1,17 @@
 # i3 config file (v4)
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-
-#__________________________________/ Settings \__________________________________
-# to change the system theme, install lxappearance (called 'customize look and feal once installed)
-
-#____/ Recomended Packages \____
-
-	#xbuntu desktop intagration, required for workspace switcher
-	# ppa:aacebedo/libi3ipc-glib
-	# libi3ipc-glib
-
-	#workspace switcher applet
-	# ppa:aacebedo/xfce4-i3-workspaces-plugin
-	# sudo apt-get install xfce4-i3-workspaces-plugin
-
-	# libi3ipc-glib
-	# xfce4-panel
-	# save https://i3wm.org/docs/userguide.html to ~/Downloads/i3UserGuide.html
-
+# this config file is made to work with xfce
 
 #____/ Display vars \____
-
-	# set $clrBknd		#000000
-	# set $cltBoarder	#000000
-	# set $clrUnselect	#303641
-	# set $clrSelect	#5294e2
-	# set $clrText		#ffffff
 
 	set $clrBknd		#000000
 	set $cltBoarder		#000000
 	set $clrUnselect	#303641
-	set $clrSelect		#303641
+	set $clrSelect		#5294e2
 	set $clrText		#5294e2
 
-	set $ftextSize 0
+	set $textSize 0
 
 
 #____/ Defaults \____
@@ -45,20 +22,21 @@
 	
 	set $systemMonitor gnome-system-monitor
 
-#	set $fileManager nautilus --no-desktop
-#	set $fileManager pcmanfm
-	set $fileManager thunar
+	# set $fileManager nautilus --no-desktop
+	set $fileManager pcmanfm
+	# set $fileManager thunar
 
 	set $calcApp gnome-calculator
 
 	set $terminalApp i3-sensible-terminal
 
 	# launcherApp is default, launcherApp1 is launched with the same binding + Shift
-	set $launcherApp1 synapse
-	set $launcherApp ~/c++/WidapLauncher/WidapLauncher
+	set $launcherApp synapse
+	set $launcherApp1 ~/c++/WidapLauncher/WidapLauncher
 
-	set $browserApp firefox
+#	set $browserApp firefox
 #	set $browserApp google-chrome
+	set $browserApp chromium
 
 
 #____/ Keys \____
@@ -72,57 +50,6 @@
 	#swap caps lock and escape
 	exec --no-startup-id xmodmap -e "keycode 66 = Escape NoSymbol Escape" # do the swap
 	exec --no-startup-id xmodmap -e "clear Lock" # stop the light from toggeling
-
-
-#__________________________________/ Init \__________________________________
-
-
-#____/ Desktop Background \____
-
-	# for auth on graphical applications I think
-	exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-
-	exec --no-startup-id libinput-gestures-setup start
-
-	# exec --no-startup-id /usr/bin/compton --config /home/joe/.compton.conf~.i3/config
-	# exec --no-startup-id /usr/bin/compton
-	exec --no-startup-id [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
-	exec --no-startup-id xrandr --dpi 192
-
-	#set background to a solid color
-	# exec --no-startup-id xsetroot -solid "$clrBknd"
-
-	#set background to an image
-	# exec --no-startup-id feh --bg-scale /home/user/path/to/image &
-	exec --no-startup-id feh --bg-scale /home/william/Pictures/backgrounds/arch_on_lake.png &
-
-	#not sure what this one does
-	#exec --no-startup-id sh ~/.fehbg &
-
-
-#____/ Panels and applets \____
-
-	#start wifi manager
-	# exec --no-startup-id nm-applet
-
-	#start power manager
-	# exec --no-startup-id xfce4-power-manager
-
-	#start volume manager
-	# exec --no-startup-id gnome-sound-applet
-
-	#xfce panel
-	exec --no-startup-id GTK_THEME=Adwaita:dark xfce4-panel --disable-wm-check
-	#exec --no-startup-id xfce4-panel --disable-wm-check
-
-	#LXPanel
-	#exec --no-startup-id lxpanel
-	
-	#Mate panel
-	# exec --no-startup-id mate-panel
-	
-	#Cairo dock
-	# exec --no-startup-id cairo-dock -o
 
 
 #__________________________________/ Set Launch Bindings \__________________________________
@@ -343,11 +270,11 @@
 	#new_window none
 
 	# gaps
-	gaps outer 0
-	gaps inner 12
+	gaps outer 4
+	gaps inner 8
 	
 	# leave fullscreen on popup
-	# popup_during_fullscreen ignore
+	popup_during_fullscreen ignore
 
 	#multi monitor stuff (shouldn't affect you unless you use multiple monitors)
 	workspace 1 output LVDS1
