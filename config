@@ -87,7 +87,7 @@
 	# exec --no-startup-id /usr/bin/compton --config /home/joe/.compton.conf~.i3/config
 	# exec --no-startup-id /usr/bin/compton
 	exec --no-startup-id [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
-	exec --no-startup-id xrandr --dpi 192
+	exec --no-startup-id xrandr --dpi 72
 
 	#set background to a solid color
 	# exec --no-startup-id xsetroot -solid "$clrBknd"
@@ -176,7 +176,7 @@
 	bindsym $mod+Return exec $terminalApp
 	#open a program launcher
 	bindsym Menu exec $launcherApp
-	bindsym $mod+space exec $launcherApp
+	bindsym $mod+space exec --no-startup-id $launcherApp
 	bindsym $mod+Shift+space exec $launcherApp1
 
 
@@ -343,8 +343,8 @@
 	#new_window none
 
 	# gaps
-	gaps outer 0
-	gaps inner 12
+	# gaps outer 0
+	# gaps inner 12
 	
 	# leave fullscreen on popup
 	# popup_during_fullscreen ignore

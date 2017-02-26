@@ -193,7 +193,7 @@ void showVolLevel(double level)
 		muteXS2.setOrigin(sf::Vector2f(muteXS2.getRadius(), muteXS2.getRadius()));
 		muteXS2.setPosition(sf::Vector2f(0.55*w, 0.4*h));
 		muteXS2.setFillColor(sf::Color(0, 0, 0, 0));
-		muteXS2.setOutlineThickness(12);
+		muteXS2.setOutlineThickness(0.05*h);
 		muteXS2.setOutlineColor(muteXC);
 		window.draw(muteXS2);
 		
