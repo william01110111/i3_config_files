@@ -16,6 +16,8 @@ if (( $new < $min )); then
     new=$min
 fi
 
+echo brightness set to $new "("range is $min - $max")"
+
 sudo tee /sys/class/leds/smc::kbd_backlight/brightness <<< $new
-/home/william/.config/i3/WidapPopup/WidapPopupRun kb-brightness $(($new*100/$max))
+#/home/william/.config/i3/WidapPopup/WidapPopupRun kb-brightness $(($new*100/$max))
 

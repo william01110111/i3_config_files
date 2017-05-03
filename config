@@ -45,17 +45,17 @@
 	
 	set $systemMonitor gnome-system-monitor
 
-#	set $fileManager nautilus --no-desktop
+	set $fileManager nautilus --no-desktop
 #	set $fileManager pcmanfm
-	set $fileManager thunar
-
+#	set $fileManager thunar
+ 
 	set $calcApp gnome-calculator
 
-	set $terminalApp i3-sensible-terminal
+	set $terminalApp gnome-terminal
 
 	# launcherApp is default, launcherApp1 is launched with the same binding + Shift
 	set $launcherApp1 synapse
-	set $launcherApp ~/c++/WidapLauncher/WidapLauncher
+	set $launcherApp ~/code/WidapLauncher/WidapLauncher
 
 	set $browserApp firefox
 #	set $browserApp google-chrome
@@ -70,8 +70,8 @@
 	set $mod Mod4
 	
 	#swap caps lock and escape
-	exec --no-startup-id xmodmap -e "keycode 66 = Escape NoSymbol Escape" # do the swap
-	exec --no-startup-id xmodmap -e "clear Lock" # stop the light from toggeling
+	#exec --no-startup-id xmodmap -e "keycode 66 = Escape NoSymbol Escape" # do the swap
+	#exec --no-startup-id xmodmap -e "clear Lock" # stop the light from toggeling
 
 
 #__________________________________/ Init \__________________________________
@@ -80,22 +80,23 @@
 #____/ Desktop Background \____
 
 	# for auth on graphical applications I think
-	exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+	# exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
 	exec --no-startup-id libinput-gestures-setup start
 
 	# exec --no-startup-id /usr/bin/compton --config /home/joe/.compton.conf~.i3/config
 	# exec --no-startup-id /usr/bin/compton
-	exec --no-startup-id [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
-	exec --no-startup-id xrandr --dpi 72
+	# exec --no-startup-id [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
+	# exec --no-startup-id xrandr --dpi 72
 
 	#set background to a solid color
 	# exec --no-startup-id xsetroot -solid "$clrBknd"
 
 	#set background to an image
 	# exec --no-startup-id feh --bg-scale /home/user/path/to/image &
-	exec --no-startup-id feh --bg-scale /home/william/Pictures/backgrounds/arch_on_lake.png &
-
+	# exec --no-startup-id feh --bg-scale /home/william/pictures/backgrounds/arch_on_lake.png &
+	output "*" background /home/william/pictures/backgrounds/arch_on_lake.png fill
+	
 	#not sure what this one does
 	#exec --no-startup-id sh ~/.fehbg &
 
@@ -123,6 +124,9 @@
 	
 	#Cairo dock
 	# exec --no-startup-id cairo-dock -o
+	
+	#KDE connect
+	exec /usr/lib/kdeconnectd
 
 
 #__________________________________/ Set Launch Bindings \__________________________________
@@ -136,6 +140,7 @@
 	#exit i3 (logs you out of your X session)
 	# bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 	bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+	bindsym Control+$alt+BackSpace exit
 
 	bindsym $mod+Delete exec $systemMonitor
 
@@ -317,7 +322,7 @@
 
 	# set $fontVar -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 	# set $fontVar pango:DejaVu Sans Mono $textSize
-	set $fontVar pango:Ubuntu Mono 0
+	set $fontVar pango:Ubuntu Mono 12
 	# set $fontVar pango:Ubuntu Regular $textSize
 
 
@@ -373,6 +378,8 @@
 
 	# Start i3bar to display a workspace bar (plus the system information i3status
 	# finds out, if available)
+
+output eDP-1 scale 2
 
 # bar {
 #    status_command i3status --config ~/.config/i3/status-config
