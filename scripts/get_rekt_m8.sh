@@ -41,7 +41,7 @@ sleep 0.2
 
 /home/william/.config/i3/scripts/get_rekt_m8.sh &
 
-sleep 20
+sleep 16
 
 shutdown now
 

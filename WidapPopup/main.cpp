@@ -378,6 +378,7 @@ void showKbBrightLevel(double level)
 
 double getCurrentVolLevel()
 {
+	/*
 	string amixerOut=getOutputFromCmd("amixer sget Master");
 	
 	int end1=searchInString(amixerOut, 0, "%]");
@@ -417,6 +418,10 @@ double getCurrentVolLevel()
 	string onOff=amixerOut.substr(start2, end2-start2);
 	
 	bool muted=(onOff=="off");
+	*/
+	
+	bool muted=(getOutputFromCmd("pamixer --get-mute")=="true\n");
+	int percent=stoi(getOutputFromCmd("pamixer --get-volume"));
 	
 	return (muted?-1:1)*percent/100.0;
 }
