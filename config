@@ -1,9 +1,8 @@
 # i3 config file (v4)
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
-
 #__________________________________/ Settings \__________________________________
-# to change the system theme, install lxappearance (called 'customize look and feal once installed)
+# to change the system theme, install lxappearance (called 'customize look and feel once installed)
 
 #____/ Recomended Packages \____
 
@@ -14,26 +13,33 @@
 	#workspace switcher applet
 	# ppa:aacebedo/xfce4-i3-workspaces-plugin
 	# sudo apt-get install xfce4-i3-workspaces-plugin
-
-	# libi3ipc-glib
+	
 	# xfce4-panel
-	# save https://i3wm.org/docs/userguide.html to ~/Downloads/i3UserGuide.html
 
 
 #____/ Display vars \____
 
 	# set $clrBknd		#000000
 	# set $cltBoarder	#000000
-	# set $clrUnselect	#303641
+	# set $clrUnselect	#171a1f
 	# set $clrSelect	#5294e2
 	# set $clrText		#ffffff
-
+	
+	# arc dark
 	set $clrBknd		#000000
 	set $cltBoarder		#000000
-	set $clrUnselect	#303641
+	set $clrUnselect	#171a1f
 	set $clrSelect		#303641
+	set $clrAltSelect	#252935
 	set $clrText		#5294e2
-
+	
+	# green
+	# set $clrBknd		#000000
+	# set $cltBoarder		#000000
+	# set $clrUnselect	#000000
+	# set $clrSelect		#202020
+	# set $clrText		#00c000
+	
 	set $ftextSize 0
 
 
@@ -45,17 +51,20 @@
 	
 	set $systemMonitor gnome-system-monitor
 
-	set $fileManager nautilus --no-desktop
+#	set $fileManager nautilus --no-desktop
 #	set $fileManager pcmanfm
-#	set $fileManager thunar
+	set $fileManager thunar
  
 	set $calcApp gnome-calculator
 
-	set $terminalApp gnome-terminal
+	#set $terminalApp gnome-terminal
+	#set $terminalApp termite
+	set $terminalApp lxterminal
 
 	# launcherApp is default, launcherApp1 is launched with the same binding + Shift
 	set $launcherApp1 synapse
 	set $launcherApp ~/code/WidapLauncher/WidapLauncher
+
 
 	set $browserApp firefox
 #	set $browserApp google-chrome
@@ -86,8 +95,8 @@
 
 	# exec --no-startup-id /usr/bin/compton --config /home/joe/.compton.conf~.i3/config
 	# exec --no-startup-id /usr/bin/compton
-	# exec --no-startup-id [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
-	# exec --no-startup-id xrandr --dpi 72
+	exec --no-startup-id [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
+	exec --no-startup-id xrandr --dpi 192
 
 	#set background to a solid color
 	# exec --no-startup-id xsetroot -solid "$clrBknd"
@@ -95,10 +104,11 @@
 	#set background to an image
 	# exec --no-startup-id feh --bg-scale /home/user/path/to/image &
 	# exec --no-startup-id feh --bg-scale /home/william/pictures/backgrounds/arch_on_lake.png &
-	output "*" background /home/william/pictures/backgrounds/arch_on_lake.png fill
+	# output "*" background /home/william/pictures/backgrounds/arch_on_lake.png fill
+	# output "*" solid_color #0000f0
 	
 	#not sure what this one does
-	#exec --no-startup-id sh ~/.fehbg &
+	exec --no-startup-id sh ~/.fehbg
 
 
 #____/ Panels and applets \____
@@ -113,7 +123,7 @@
 	# exec --no-startup-id gnome-sound-applet
 
 	#xfce panel
-	exec --no-startup-id GTK_THEME=Adwaita:dark xfce4-panel --disable-wm-check
+	#exec --no-startup-id GTK_THEME=Adwaita:dark xfce4-panel --disable-wm-check
 	#exec --no-startup-id xfce4-panel --disable-wm-check
 
 	#LXPanel
@@ -126,7 +136,7 @@
 	# exec --no-startup-id cairo-dock -o
 	
 	#KDE connect
-	exec /usr/lib/kdeconnectd
+	exec --no-startup-id /usr/lib/kdeconnectd
 
 
 #__________________________________/ Set Launch Bindings \__________________________________
@@ -135,11 +145,11 @@
 #____/ Settings and Control \____
 
 	# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-	bindsym $mod+Shift+r restart
+	bindsym $mod+Shift+r reload
 
 	#exit i3 (logs you out of your X session)
 	# bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-	bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+	# bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 	bindsym Control+$alt+BackSpace exit
 
 	bindsym $mod+Delete exec $systemMonitor
@@ -161,9 +171,15 @@
 	bindsym $mod+2 exec $scriptDir/temp_scripts/2.sh
 	bindsym $mod+3 exec $scriptDir/temp_scripts/3.sh
 	bindsym $mod+4 exec $scriptDir/temp_scripts/4.sh
+	
+	bindsym $mod+Shift+1 exec gedit $scriptDir/temp_scripts/1.sh
+	bindsym $mod+Shift+2 exec gedit $scriptDir/temp_scripts/2.sh
+	bindsym $mod+Shift+3 exec gedit $scriptDir/temp_scripts/3.sh
+	bindsym $mod+Shift+4 exec gedit $scriptDir/temp_scripts/4.sh
 		
 	
 #____/ Run Common Programs \____
+
 
 #	bindsym $mod+Control+n exec nautilus --no-desktop
 #	bindsym $mod+Control+f exec firefox
@@ -211,10 +227,10 @@
 	bindsym $mod+Shift+z move left
 
 	# split in horizontal orientation
-	bindsym $mod+Shift+h split h
+	bindsym $mod+Shift+d split h
 
 	# split in vertical orientation
-	bindsym $mod+Shift+v split v
+	bindsym $mod+Shift+e split v
 
 	# enter fullscreen mode for the focused container
 	# M for maximize
@@ -223,7 +239,7 @@
 	# change container layout (stacked, tabbed, toggle split)
 	#bindsym $mod+s layout stacking
 	bindsym $mod+w layout tabbed
-	bindsym $mod+e layout toggle split
+	bindsym $mod+Shift+w layout toggle split
 
 	# toggle tiling / floating
 	bindsym $mod+Shift+t floating toggle
@@ -235,10 +251,10 @@
 	bindsym $mod+t focus mode_toggle
 
 	# focus the parent container
-	bindsym $mod+a focus parent
+	bindsym $mod+e focus parent
 
 	# focus the child container
-	bindsym $mod+s focus
+	bindsym $mod+d focus child
 
 	# switch to workspace
 	#bindsym $alt+Down workspace $(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 8 | head -n 1)
@@ -325,9 +341,9 @@
 
 	# set $fontVar -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 	# set $fontVar pango:DejaVu Sans Mono $textSize
-	set $fontVar pango:Ubuntu Mono 12
+	#set $fontVar pango:Ubuntu Mono 12
+	set $fontVar pango:xos4 Terminus Bold 24
 	# set $fontVar pango:Ubuntu Regular $textSize
-
 
 #____/ Window Settings \____
 
@@ -336,8 +352,8 @@
 	#window colors
 	# class                 border			bknd			text			indicator
 	client.focused          $clrSelect		$clrSelect		$clrText		$clrSelect
-	client.focused_inactive $clrBoarder		$clrUnselect	$clrText		$clrSelect
-	client.unfocused        $clrBoarder		$clrUnselect	$clrText		$clrSelect
+	client.focused_inactive $clrAltSelect	$clrAltSelect	$clrText		$clrSelect
+	client.unfocused        $clrUnselect	$clrUnselect	$clrText		$clrSelect
 	client.urgent           $clrSelect		$clrText		$clrText		$clrSelect
 
 	#new workspaces start tabbed
@@ -347,9 +363,10 @@
 	hide_edge_borders both
 
 	#boarders around windows (does not apply on edge of screen if hide_edge_borders is used
-	new_window pixel 1
+	#new_window pixel 1
 	#new_window none
-
+	#default_border pixel
+	
 	# gaps
 	# gaps outer 0
 	# gaps inner 12
@@ -382,24 +399,26 @@
 	# Start i3bar to display a workspace bar (plus the system information i3status
 	# finds out, if available)
 
-output eDP-1 scale 2
+	# output eDP-1 scale 2
 
-# bar {
-#    status_command i3status --config ~/.config/i3/status-config
-#    #mode hide
-#    #hidden_state show
-#    modifier $alt
-#    font $fontVar
-#
-#    colors {
-#        background $clrUnselect
-#        statusline $clrText
-#        separator $clrSelect
-#
-#	#						border			bknd			text
-#        focused_workspace	$clrSelect		$clrSelect		$clrText
-#        active_workspace   	$clrSelect		$clrSelect		$clrText
-#        inactive_workspace	$clrUnselect	$clrUnselect	$clrText
-#        urgent_workspace  	$clrUnselect	#ff0000			$clrText
-#    }
-#}
+bar {
+    #status_command i3status --config ~/.config/i3/status-config
+    status_command /home/william/code/wmww_statusline/wmww_status
+    #mode hide
+    #hidden_state hide
+    modifier $alt
+    font pango:xos4 Terminus Bold 16
+
+    colors {
+        background $clrUnselect
+        statusline $clrText
+        #separator $clrSelect
+        separator #ffffff
+        
+		#					border			bknd			text
+        focused_workspace	$clrSelect		$clrSelect		$clrText
+        active_workspace   	$clrSelect		$clrSelect		$clrText
+        inactive_workspace	$clrUnselect	$clrUnselect	$clrText
+        urgent_workspace  	$clrUnselect	#ff0000			$clrText
+    }
+}
