@@ -96,7 +96,7 @@
 	# exec --no-startup-id /usr/bin/compton --config /home/joe/.compton.conf~.i3/config
 	# exec --no-startup-id /usr/bin/compton
 	exec --no-startup-id [[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
-	exec --no-startup-id xrandr --dpi 192
+	# exec --no-startup-id xrandr --dpi 192
 
 	#set background to a solid color
 	# exec --no-startup-id xsetroot -solid "$clrBknd"
@@ -104,7 +104,6 @@
 	#set background to an image
 	# exec --no-startup-id feh --bg-scale /home/user/path/to/image &
 	# exec --no-startup-id feh --bg-scale /home/william/pictures/backgrounds/arch_on_lake.png &
-	# output "*" background /home/william/pictures/backgrounds/arch_on_lake.png fill
 	# output "*" solid_color #0000f0
 	
 	#not sure what this one does
@@ -145,7 +144,7 @@
 #____/ Settings and Control \____
 
 	# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-	bindsym $mod+Shift+r reload
+	bindsym $mod+Shift+r restart
 
 	#exit i3 (logs you out of your X session)
 	# bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
@@ -225,21 +224,17 @@
 	bindsym $mod+Shift+Right move right
 	bindsym $mod+Shift+x move right
 	bindsym $mod+Shift+z move left
-
-	# split in horizontal orientation
-	bindsym $mod+Shift+d split h
-
-	# split in vertical orientation
-	bindsym $mod+Shift+e split v
-
-	# enter fullscreen mode for the focused container
-	# M for maximize
-	bindsym $mod+m fullscreen
-
-	# change container layout (stacked, tabbed, toggle split)
-	#bindsym $mod+s layout stacking
+	
 	bindsym $mod+w layout tabbed
-	bindsym $mod+Shift+w layout toggle split
+	bindsym $mod+s layout toggle splith splitv
+	bindsym $mod+Shift+s splith
+	
+	bindsym $mod+e focus parent
+	bindsym $mod+d focus child
+	
+	# Macbook F3 and F4
+	bindsym XF86LaunchA layout tabbed
+	bindsym XF86LaunchB layout toggle splith splitv
 
 	# toggle tiling / floating
 	bindsym $mod+Shift+t floating toggle
@@ -249,13 +244,11 @@
 
 	# change focus between tiling / floating windows
 	bindsym $mod+t focus mode_toggle
+	
+	# enter fullscreen mode for the focused container
+	# M for maximize
 
-	# focus the parent container
-	bindsym $mod+e focus parent
-
-	# focus the child container
-	bindsym $mod+d focus child
-
+	bindsym $mod+m fullscreen
 	# switch to workspace
 	#bindsym $alt+Down workspace $(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 8 | head -n 1)
 	bindsym $alt+Tab workspace next
@@ -291,14 +284,14 @@
 
 	#resize
 	bindsym $mod+Control+Left resize shrink width 8 px or 8 ppt
-	bindsym $mod+Control+Down resize grow height 8 px or 8 ppt
-	bindsym $mod+Control+Up resize shrink height 8 px or 8 ppt
+	bindsym $mod+Control+Down resize shrink height 8 px or 8 ppt
+	bindsym $mod+Control+Up resize grow height 8 px or 8 ppt
 	bindsym $mod+Control+Right resize grow width 8 px or 8 ppt
-
-	bindsym $mod+Control+Shift+Left resize shrink width 8 px or 8 ppt
-	bindsym $mod+Control+Shift+Down resize grow height 8 px or 8 ppt
-	bindsym $mod+Control+Shift+Up resize shrink height 8 px or 8 ppt
-	bindsym $mod+Control+Shift+Right resize grow width 8 px or 8 ppt
+	
+	bindsym $mod+Control+Shift+Left resize shrink width 2 px or 2 ppt
+	bindsym $mod+Control+Shift+Down resize shrink height 2 px or 2 ppt
+	bindsym $mod+Control+Shift+Up resize grow height 2 px or 2 ppt
+	bindsym $mod+Control+Shift+Right resize grow width 2 px or 2 ppt
 	
 	#Power off
 	
@@ -342,7 +335,7 @@
 	# set $fontVar -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 	# set $fontVar pango:DejaVu Sans Mono $textSize
 	#set $fontVar pango:Ubuntu Mono 12
-	set $fontVar pango:xos4 Terminus Bold 24
+	set $fontVar pango:xos4 Terminus Bold 12
 	# set $fontVar pango:Ubuntu Regular $textSize
 
 #____/ Window Settings \____
@@ -363,13 +356,13 @@
 	hide_edge_borders both
 
 	#boarders around windows (does not apply on edge of screen if hide_edge_borders is used
-	#new_window pixel 1
+	new_window pixel 2
 	#new_window none
 	#default_border pixel
 	
 	# gaps
-	# gaps outer 0
-	# gaps inner 12
+	gaps outer 0
+	gaps inner 12
 	
 	# leave fullscreen on popup
 	# popup_during_fullscreen ignore
@@ -392,7 +385,12 @@
 	for_window [title="Calculator"] floating enable
 	for_window [title="Widap Launcher"] floating enable
 	for_window [title="WidapPopupWindow"] floating enable
-
+	
+	for_window [title="Hedgehog"] floating enable
+	for_window [title="Hedgehog"] move right 600
+	for_window [title="Hedgehog"] move up 200
+	no_focus [title="Hedgehog"]
+	
 	#calender popup
 	for_window [title="wrapper-1.0"] floating enable
 
