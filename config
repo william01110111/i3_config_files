@@ -26,12 +26,12 @@
 	# set $clrText		#ffffff
 	
 	# arc dark
-	set $clrBknd		#000000
-	set $cltBoarder		#000000
-	set $clrUnselect	#171a1f
-	set $clrSelect		#303641
-	set $clrAltSelect	#252935
-	set $clrText		#5294e2
+	# set $clrBknd		#000000
+	# set $cltBoarder		#000000
+	# set $clrUnselect	#171a1f
+	# set $clrSelect		#303641
+	# set $clrAltSelect	#252935
+	# set $clrText		#5294e2
 	
 	# green
 	# set $clrBknd		#000000
@@ -39,6 +39,22 @@
 	# set $clrUnselect	#000000
 	# set $clrSelect		#202020
 	# set $clrText		#00c000
+
+	# custom green
+	# set $clrBknd		#000000
+	# set $cltBoarder		#000000
+	# set $clrUnselect	#171a1f
+	# set $clrSelect		#303641
+	# set $clrAltSelect	#252935
+	# set $clrText		#34df55
+
+	# custom green
+	set $clrBknd		#050505
+	set $cltBoarder		#050505
+	set $clrUnselect	#303030
+	set $clrSelect		#ffffff
+	set $clrAltSelect	#606060
+	set $clrText		#60b0d0
 	
 	set $ftextSize 0
 
@@ -53,7 +69,9 @@
 
 #	set $fileManager nautilus --no-desktop
 #	set $fileManager pcmanfm
-	set $fileManager thunar
+#	set $fileManager thunar
+    set $fileManager nemo
+
  
 	set $calcApp gnome-calculator
 
@@ -62,8 +80,8 @@
 	set $terminalApp lxterminal
 
 	# launcherApp is default, launcherApp1 is launched with the same binding + Shift
-	set $launcherApp1 synapse
-	set $launcherApp ~/code/WidapLauncher/WidapLauncher
+	set $launcherApp synapse
+	set $launcherApp1 ~/code/WidapLauncher/WidapLauncher
 
 
 	set $browserApp firefox
@@ -91,7 +109,7 @@
 	# for auth on graphical applications I think
 	# exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
-	exec --no-startup-id libinput-gestures-setup start
+	# exec --no-startup-id libinput-gestures-setup start
 
 	# exec --no-startup-id /usr/bin/compton --config /home/joe/.compton.conf~.i3/config
 	# exec --no-startup-id /usr/bin/compton
@@ -105,9 +123,11 @@
 	# exec --no-startup-id feh --bg-scale /home/user/path/to/image &
 	# exec --no-startup-id feh --bg-scale /home/william/pictures/backgrounds/arch_on_lake.png &
 	# output "*" solid_color #0000f0
+
+	output "*" background /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 	
 	#not sure what this one does
-	exec --no-startup-id sh ~/.fehbg
+	# exec --no-startup-id sh ~/.fehbg
 
 
 #____/ Panels and applets \____
@@ -135,8 +155,7 @@
 	# exec --no-startup-id cairo-dock -o
 	
 	#KDE connect
-	exec --no-startup-id /usr/lib/kdeconnectd
-
+	#exec --no-startup-id /usr/lib/kdeconnectd
 
 #__________________________________/ Set Launch Bindings \__________________________________
 
@@ -144,12 +163,12 @@
 #____/ Settings and Control \____
 
 	# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-	bindsym $mod+Shift+r restart
+	bindsym $mod+Shift+r reload
 
 	#exit i3 (logs you out of your X session)
 	# bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 	# bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-	bindsym Control+$alt+BackSpace exit
+	bindsym Control+$mod+Shift+BackSpace exit
 
 	bindsym $mod+Delete exec $systemMonitor
 
@@ -167,7 +186,7 @@
 	
 #____/ custom scripts \____
 	bindsym $mod+1 exec $scriptDir/temp_scripts/1.sh
-	bindsym $mod+2 exec $scriptDir/temp_scripts/2.sh
+	bindsym $mod+2 exec ~/light/Config/scripts/fullscreen-tile.sh
 	bindsym $mod+3 exec $scriptDir/temp_scripts/3.sh
 	bindsym $mod+4 exec $scriptDir/temp_scripts/4.sh
 	
@@ -198,6 +217,7 @@
 	bindsym Menu exec $launcherApp
 	bindsym $mod+space exec --no-startup-id $launcherApp
 	bindsym $mod+Shift+space exec $launcherApp1
+	bindsym $mod+l exec swaylock
 
 
 #__________________________________/ Window Managment \__________________________________
@@ -209,7 +229,7 @@
 	bindsym $mod+q kill
 
 	# change focus
-	bindsym $mod+Tab focus right
+	#bindsym $mod+Tab focus right
 	bindsym $mod+Left focus left
 	bindsym $mod+Down focus down
 	bindsym $mod+Up focus up
@@ -225,7 +245,7 @@
 	bindsym $mod+Shift+x move right
 	bindsym $mod+Shift+z move left
 	
-	bindsym $mod+w layout tabbed
+	bindsym $mod+w layout toggle tabbed stacking
 	bindsym $mod+s layout toggle splith splitv
 	bindsym $mod+Shift+s splith
 	
@@ -251,7 +271,7 @@
 	bindsym $mod+m fullscreen
 	# switch to workspace
 	#bindsym $alt+Down workspace $(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 8 | head -n 1)
-	bindsym $alt+Tab workspace next
+	#bindsym $alt+Tab workspace next
 	bindsym $alt+Right workspace next
 	bindsym $alt+Left workspace prev
 	bindsym $alt+x workspace next
@@ -270,7 +290,7 @@
 	bindsym $alt+Shift+a move workspace to output right
 
 	# move focused window to workspace
-	bindsym $alt+Shift+Tab move container to workspace next; workspace next
+	#bindsym $alt+Shift+Tab move container to workspace next; workspace next
 	bindsym $alt+Shift+Right move container to workspace next; workspace next
 	bindsym $alt+Shift+Left move container to workspace prev; workspace prev
 	bindsym $alt+Shift+x move container to workspace next; workspace next
@@ -343,11 +363,11 @@
 	font $fontVar
 
 	#window colors
-	# class                 border			bknd			text			indicator
-	client.focused          $clrSelect		$clrSelect		$clrText		$clrSelect
-	client.focused_inactive $clrAltSelect	$clrAltSelect	$clrText		$clrSelect
-	client.unfocused        $clrUnselect	$clrUnselect	$clrText		$clrSelect
-	client.urgent           $clrSelect		$clrText		$clrText		$clrSelect
+	# class                 border			background		text		    indicator       child border
+	client.focused          $clrSelect		$clrSelect		$clrText		$clrSelect      $clrSelect
+	client.focused_inactive $clrAltSelect	$clrAltSelect	$clrText		$clrSelect      $clrUnselect
+	client.unfocused        $clrUnselect	$clrUnselect	$clrText		$clrSelect      $clrUnselect
+	client.urgent           $clrSelect		$clrText		$clrText		$clrSelect      $clrUnselect
 
 	#new workspaces start tabbed
 	workspace_layout tabbed
@@ -356,13 +376,13 @@
 	hide_edge_borders both
 
 	#boarders around windows (does not apply on edge of screen if hide_edge_borders is used
-	new_window pixel 2
+	default_border pixel 2
 	#new_window none
-	#default_border pixel
+	#
 	
 	# gaps
 	gaps outer 0
-	gaps inner 12
+	gaps inner 0
 	
 	# leave fullscreen on popup
 	# popup_during_fullscreen ignore
@@ -385,27 +405,51 @@
 	for_window [title="Calculator"] floating enable
 	for_window [title="Widap Launcher"] floating enable
 	for_window [title="WidapPopupWindow"] floating enable
+	for_window [title="Firefox — Sharing Indicator"] floating enable; move position 0 0; focus mode_toggle
+	for_window [app_id="Eclipse" title="Find/Replace"] floating enable; border none; focus mode_toggle
 	
-	for_window [title="Hedgehog"] floating enable
-	for_window [title="Hedgehog"] move right 600
-	for_window [title="Hedgehog"] move up 200
-	no_focus [title="Hedgehog"]
+	# make the nemo jump-to-file text box float
+	for_window [title="^nemo$"] floating enable
 	
 	#calender popup
 	for_window [title="wrapper-1.0"] floating enable
+	
+	# Eclipse IDE
+	for_window [title="Find/Replace"] floating enable
 
 	# Start i3bar to display a workspace bar (plus the system information i3status
 	# finds out, if available)
 
 	# output eDP-1 scale 2
 
+input 1739:30383:DELL08AF:00_06CB:76AF_Touchpad {
+    middle_emulation enabled
+    tap enabled
+    dwt enabled
+    click_method clickfinger
+}
+
+input 9639:64103:CX_2.4G_Receiver_Mouse {
+    accel_profile flat
+    pointer_accel 0
+}
+
 bar {
     #status_command i3status --config ~/.config/i3/status-config
-    status_command /home/william/code/wmww_statusline/wmww_status
+    status_command ${HOME}/code/utils/wmww_statusline/wmww_status
     #mode hide
     #hidden_state hide
     modifier $alt
-    font pango:xos4 Terminus Bold 16
+    # font pango:xos4 Terminus Bold 16
+    # font size 14
+    font Monospace Regular 16
+
+    # diable vertical scrolling
+    bindsym button4 nop
+    bindsym button5 nop
+    # diable horizontal scrolling
+    bindsym button6 nop
+    bindsym button7 nop
 
     colors {
         background $clrUnselect
